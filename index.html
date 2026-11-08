@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Pengunduh TikTok - Gratis Tanpa Watermark</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+  body { background: #f0f2f5; color: #333; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
+  
+  header { text-align: center; margin-bottom: 25px; max-width: 500px; }
+  header h1 { color: #ff0050; font-size: 28px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 8px;}
+  header p.desc { color: #555; font-size: 14px; line-height: 1.5; margin-bottom: 15px;}
+  
+  .features { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
+  .badge { background: #e3f2fd; color: #1976d2; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid #bbdefb; }
+
+  .container { width: 100%; max-width: 500px; background: #ffffff; padding: 25px; border-radius: 16px; border: 1px solid #e0e0e0; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+  
+  /* Area Input */
+  .input-group { position: relative; margin-bottom: 10px; }
+  input[type="text"] { width: 100%; padding: 16px 45px 16px 16px; border-radius: 12px; border: 2px solid #e0e0e0; background: #fafafa; color: #333; font-size: 15px; outline: none; transition: 0.3s; }
+  input[type="text"]:focus { border-color: #ff0050; background: #fff; }
+  
+  #clearBtn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #999; font-size: 20px; cursor: pointer; display: none; padding: 0;}
+  .paste-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: #e0e0e0; border: none; color: #333; font-size: 12px; font-weight: bold; padding: 6px 12px; border-radius: 6px; cursor: pointer; display: none; }
+
+  /* Style Kotak Iklan */
+  .ad-slot { 
+    width: 100%; 
+    min-height: 60px; 
+    background: #fafafa; 
+    border: 1px dashed #ccc; 
+    border-radius: 8px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    overflow: hidden;
+  }
+  .ad-slot span { color: #aaa; font-size: 12px; }
+  
+  .ad-slot-1 { margin-bottom: 15px; }
+  .ad-slot-2 { margin-top: 20px; margin-bottom: 0; }
+  .ad-slot-3 { margin-top: 20px; margin-bottom: 15px; }
+  .ad-slot-4 { margin-top: 15px; margin-bottom: 15px; } /* Iklan Baru */
+
+  /* Tombol Utama */
+  button.main-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; background: #ff0050; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(255, 0, 80, 0.3); margin-top: 5px;}
+  button.main-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
+
+  #loading { display: none; margin-top: 20px; color: #ff0050; font-weight: bold; text-align: center; align-items: center; justify-content: center; gap: 10px;}
+  .spinner { width: 20px; height: 20px; border: 3px solid #ffcdd2; border-top: 3px solid #ff0050; border-radius: 50%; animation: spin 1s linear infinite; }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+  #error { display: none; margin-top: 20px; color: #d32f2f; font-size: 14px; text-align: center; background: #ffebee; padding: 12px; border-radius: 8px; border: 1px solid #ffcdd2;}
+
+  /* Hasil */
+  #result { display: none; margin-top: 25px; text-align: center; border-top: 1px solid #eee; padding-top: 20px;}
+  #result img { width: 100%; max-width: 250px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  
+  .info-box { font-size: 13px; color: #555; margin-bottom: 20px; line-height: 1.6; text-align: left; background: #f9f9f9; padding: 12px; border-radius: 10px; border: 1px solid #eee;}
+  
+  .btn-group { display: flex; flex-direction: column; gap: 12px; }
+  .btn-group a { display: block; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 15px; text-align: center; transition: 0.2s;}
+  .btn-video { background: #007bff; color: #fff; }
+  .btn-audio { background: #28a745; color: #fff; }
+  
+  .share-btn { display: block; width: 100%; padding: 12px; margin-top: 0; background: #fff; color: #ff0050; border: 2px solid #ff0050; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer; text-align: center; text-decoration: none;}
+
+  /* Riwayat */
+  .history-section { width: 100%; max-width: 500px; margin-top: 30px; }
+  .history-section h3 { font-size: 16px; color: #555; margin-bottom: 15px; border-left: 4px solid #ff0050; padding-left: 10px;}
+  .history-card { display: flex; align-items: center; background: #fff; padding: 10px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); gap: 12px; border: 1px solid #eee;}
+  .history-card img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; }
+  .history-card .h-info { flex: 1; overflow: hidden; }
+  .history-card .h-title { font-size: 13px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;}
+  .history-card .h-author { font-size: 11px; color: #888; }
+  .history-card a { font-size: 12px; background: #e3f2fd; color: #1976d2; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-weight: bold; }
+
+  footer { margin-top: 40px; text-align: center; color: #999; font-size: 12px; line-height: 1.5; }
+  footer a { color: #ff0050; text-decoration: none; font-weight: bold; }
+</style>
+</head>
+<body>
+
+  <header>
+    <h1>🎵 Pengunduh TikTok</h1>
+    <p class="desc">Simpan video TikTok favoritmu tanpa watermark secara gratis, cepat, dan tanpa aplikasi tambahan.</p>
+    <div class="features">
+      <span class="badge">✅ Gratis</span>
+      <span class="badge">🚫 Tanpa Watermark</span>
+      <span class="badge">⚡ Cepat</span>
+      <span class="badge">📱 Support HD</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="input-group">
+      <input type="text" id="urlInput" placeholder="Tempel link TikTok di sini..." oninput="cekInput()" onpaste="setTimeout(cekInput, 100)">
+      <button class="paste-btn" id="pasteBtn" onclick="tempelLink()">Tempel</button>
+      <button id="clearBtn" onclick="hapusInput()">✕</button>
+    </div>
+    
+    <!-- ========================================== -->
+    <!-- IKLAN 1: DI BAWAH KOLOM INPUT -->
+    <!-- ========================================== -->
+    <div class="ad-slot ad-slot-1">
+       <span>[ Slot Iklan 1 ]</span> 
+    </div>
+
+    <button class="main-btn" id="downloadBtn" onclick="prosesDownload()">Unduh Sekarang</button>
+    
+    <!-- ========================================== -->
+    <!-- IKLAN 2: DI BAWAH TOMBOL UNDUH -->
+    <!-- ========================================== -->
+    <div class="ad-slot ad-slot-2">
+       <span>[ Slot Iklan 2 ]</span> 
+    </div>
+
+    <div id="loading" style="margin-top: 10px;"><div class="spinner"></div> Sedang memproses video...</div>
+    <div id="error"></div>
+
+    <div id="result">
+      <img id="thumb" src="" alt="Thumbnail">
+      <div class="info-box" id="videoInfo"></div>
+      
+      <!-- ========================================== -->
+      <!-- IKLAN 3: DI BAWAH INFO VIDEO -->
+      <!-- ========================================== -->
+      <div class="ad-slot ad-slot-3">
+         <span>[ Slot Iklan 3 ]</span> 
+      </div>
+
+      <div class="btn-group">
+        <a id="dlVideo" href="#" target="_blank" class="btn-video">⬇️ Unduh Video (Tanpa Watermark)</a>
+        <a id="dlAudio" href="#" target="_blank" class="btn-audio">🎵 Unduh Audio (MP3)</a>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- IKLAN 4 (BARU): DI ANTARA TOMBOL UNDUH DAN SHARE -->
+      <!-- ========================================== -->
+      <div class="ad-slot ad-slot-4">
+         <span>[ Slot Iklan 4 ]</span> 
+      </div>
+      
+      <a href="#" id="shareBtn" class="share-btn" onclick="bagikan()">🔗 Bagikan Web Ini ke Teman</a>
+    </div>
+  </div>
+
+  <div class="history-section" id="historySection" style="display: none;">
+    <h3>🕐 Baru Saja Diunduh</h3>
+    <div id="historyList"></div>
+  </div>
+
+  <footer>
+    Dibuat dengan ❤️ oleh <a href="#">Kaze</a>.<br>
+    Bantu share web ini biar temen-temen lo bisa download tanpa watermark!
+  </footer>
+
+<script>
+const API_URL = 'https://tikwm.com/api/';
+
+function cekInput() {
+    const val = document.getElementById('urlInput').value;
+    const clearBtn = document.getElementById('clearBtn');
+    const pasteBtn = document.getElementById('pasteBtn');
+    
+    if (val.length > 0) {
+        clearBtn.style.display = 'block';
+        pasteBtn.style.display = 'none';
+    } else {
+        clearBtn.style.display = 'none';
+        if (navigator.clipboard) pasteBtn.style.display = 'block';
+    }
+}
+
+async function tempelLink() {
+    try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById('urlInput').value = text;
+        cekInput();
+    } catch (err) {
+        alert("Browser lo nggak ngizinin akses clipboard. Tempel manual aja ya.");
+    }
+}
+
+function hapusInput() {
+    document.getElementById('urlInput').value = '';
+    cekInput();
+    document.getElementById('result').style.display = 'none';
+    document.getElementById('error').style.display = 'none';
+}
+
+async function prosesDownload() {
+    const url = document.getElementById('urlInput').value.trim();
+    const btn = document.getElementById('downloadBtn');
+    const loading = document.getElementById('loading');
+    const errorDiv = document.getElementById('error');
+    const result = document.getElementById('result');
+
+    errorDiv.style.display = 'none';
+    result.style.display = 'none';
+    
+    if (!url) {
+        errorDiv.innerText = 'Link TikTok tidak boleh kosong!';
+        errorDiv.style.display = 'block';
+        return;
+    }
+
+    if (!url.includes('tiktok.com')) {
+        errorDiv.innerText = 'Pastikan link berasal dari TikTok (tiktok.com).';
+        errorDiv.style.display = 'block';
+        return;
+    }
+
+    loading.style.display = 'flex';
+    btn.disabled = true;
+    btn.innerText = 'Memproses...';
+
+    try {
+        const response = await fetch(API_URL + '?url=' + encodeURIComponent(url));
+        const data = await response.json();
+
+        if (data.code !== 0 || !data.data) {
+            throw new Error(data.msg || 'Gagal mengambil data. Video mungkin di-private.');
+        }
+
+        const video = data.data;
+        
+        const durasi = video.duration || 0;
+        const menit = Math.floor(durasi / 60);
+        const detik = durasi % 60;
+        const formatDurasi = `${menit}:${detik < 10 ? '0' : ''}${detik}`;
+
+        document.getElementById('thumb').src = video.cover;
+        document.getElementById('videoInfo').innerHTML = `
+            <strong>📝 Judul:</strong> ${video.title || '-'}<br>
+            <strong>👤 Kreator:</strong> @${video.author?.unique_id || '-'}<br>
+            <strong>⏱️ Durasi:</strong> ${formatDurasi} Menit
+        `;
+
+        document.getElementById('dlVideo').href = video.play;
+        document.getElementById('dlAudio').href = video.music;
+
+        document.getElementById('shareBtn').href = `https://wa.me/?text=Coba deh download video TikTok tanpa watermark di sini: ${window.location.href}`;
+
+        result.style.display = 'block';
+        simpanRiwayat(video);
+
+    } catch (err) {
+        errorDiv.innerText = '❌ ' + err.message;
+        errorDiv.style.display = 'block';
+    } finally {
+        loading.style.display = 'none';
+        btn.disabled = false;
+        btn.innerText = 'Unduh Sekarang';
+    }
+}
+
+function bagikan() {
+    if (navigator.share) {
+        navigator.share({
+            title: 'Pengunduh TikTok',
+            text: 'Download video TikTok tanpa watermark gratis di sini!',
+            url: window.location.href,
+        }).catch(console.error);
+    }
+}
+
+function simpanRiwayat(video) {
+    let riwayat = JSON.parse(localStorage.getItem('tt_history')) || [];
+    riwayat = riwayat.filter(v => v.id !== video.id);
+    riwayat.unshift({ id: video.id, title: video.title, author: video.author?.unique_id || '-', cover: video.cover, play: video.play });
+    if (riwayat.length > 5) riwayat.pop();
+    localStorage.setItem('tt_history', JSON.stringify(riwayat));
+    renderRiwayat();
+}
+
+function renderRiwayat() {
+    const list = document.getElementById('historyList');
+    const section = document.getElementById('historySection');
+    let riwayat = JSON.parse(localStorage.getItem('tt_history')) || [];
+    if (riwayat.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = 'block';
+    list.innerHTML = '';
+    riwayat.forEach(v => {
+        const card = document.createElement('div');
+        card.className = 'history-card';
+        card.innerHTML = `
+            <img src="${v.cover}">
+            <div class="h-info">
+                <div class="h-title">${v.title || 'Tanpa Judul'}</div>
+                <div class="h-author">@${v.author}</div>
+            </div>
+            <a href="${v.play}" target="_blank">Unduh</a>
+        `;
+        list.appendChild(card);
+    });
+}
+
+window.onload = () => {
+    cekInput();
+    renderRiwayat();
+};
+</script>
+</body>
+  </html>
