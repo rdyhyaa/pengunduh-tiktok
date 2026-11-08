@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Pengunduh TikTok - Gratis Tanpa Watermark</title>
+
+<!-- KODE VERIFIKASI MONETAG -->
+<meta name="monetag" content="9e710bdce09eb4ca1cc0c55d3e469da0">
+
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
   body { background: #f0f2f5; color: #333; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
@@ -36,13 +40,10 @@
     align-items: center; 
     justify-content: center; 
     overflow: hidden;
+    margin-top: 20px;
+    margin-bottom: 5px;
   }
   .ad-slot span { color: #aaa; font-size: 12px; }
-  
-  .ad-slot-1 { margin-bottom: 15px; }
-  .ad-slot-2 { margin-top: 20px; margin-bottom: 0; }
-  .ad-slot-3 { margin-top: 20px; margin-bottom: 15px; }
-  .ad-slot-4 { margin-top: 15px; margin-bottom: 15px; } /* Iklan Baru */
 
   /* Tombol Utama */
   button.main-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; background: #ff0050; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(255, 0, 80, 0.3); margin-top: 5px;}
@@ -60,12 +61,12 @@
   
   .info-box { font-size: 13px; color: #555; margin-bottom: 20px; line-height: 1.6; text-align: left; background: #f9f9f9; padding: 12px; border-radius: 10px; border: 1px solid #eee;}
   
-  .btn-group { display: flex; flex-direction: column; gap: 12px; }
+  .btn-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px;}
   .btn-group a { display: block; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 15px; text-align: center; transition: 0.2s;}
   .btn-video { background: #007bff; color: #fff; }
   .btn-audio { background: #28a745; color: #fff; }
   
-  .share-btn { display: block; width: 100%; padding: 12px; margin-top: 0; background: #fff; color: #ff0050; border: 2px solid #ff0050; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer; text-align: center; text-decoration: none;}
+  .share-btn { display: block; width: 100%; padding: 12px; margin-top: 15px; background: #fff; color: #ff0050; border: 2px solid #ff0050; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer; text-align: center; text-decoration: none;}
 
   /* Riwayat */
   .history-section { width: 100%; max-width: 500px; margin-top: 30px; }
@@ -100,22 +101,22 @@
       <button class="paste-btn" id="pasteBtn" onclick="tempelLink()">Tempel</button>
       <button id="clearBtn" onclick="hapusInput()">✕</button>
     </div>
-    
-    <!-- ========================================== -->
-    <!-- IKLAN 1: DI BAWAH KOLOM INPUT -->
-    <!-- ========================================== -->
-    <div class="ad-slot ad-slot-1">
-       <span>[ Slot Iklan 1 ]</span> 
-    </div>
 
     <button class="main-btn" id="downloadBtn" onclick="prosesDownload()">Unduh Sekarang</button>
     
     <!-- ========================================== -->
-    <!-- IKLAN 2: DI BAWAH TOMBOL UNDUH -->
+    <!-- SLOT IKLAN (MONETAG) - TEMPEL KODE IKLAN LO DI SINI -->
     <!-- ========================================== -->
-    <div class="ad-slot ad-slot-2">
-       <span>[ Slot Iklan 2 ]</span> 
+    <div class="ad-slot">
+       <span>[ Slot Iklan - Tempel Kode Monetag di sini ]</span> 
+       
+       <!-- CONTOH PENEMPATAN:
+       <script type="text/javascript">
+         // Kode script dari Monetag
+       </script>
+       -->
     </div>
+    <!-- ========================================== -->
 
     <div id="loading" style="margin-top: 10px;"><div class="spinner"></div> Sedang memproses video...</div>
     <div id="error"></div>
@@ -124,23 +125,9 @@
       <img id="thumb" src="" alt="Thumbnail">
       <div class="info-box" id="videoInfo"></div>
       
-      <!-- ========================================== -->
-      <!-- IKLAN 3: DI BAWAH INFO VIDEO -->
-      <!-- ========================================== -->
-      <div class="ad-slot ad-slot-3">
-         <span>[ Slot Iklan 3 ]</span> 
-      </div>
-
       <div class="btn-group">
         <a id="dlVideo" href="#" target="_blank" class="btn-video">⬇️ Unduh Video (Tanpa Watermark)</a>
         <a id="dlAudio" href="#" target="_blank" class="btn-audio">🎵 Unduh Audio (MP3)</a>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- IKLAN 4 (BARU): DI ANTARA TOMBOL UNDUH DAN SHARE -->
-      <!-- ========================================== -->
-      <div class="ad-slot ad-slot-4">
-         <span>[ Slot Iklan 4 ]</span> 
       </div>
       
       <a href="#" id="shareBtn" class="share-btn" onclick="bagikan()">🔗 Bagikan Web Ini ke Teman</a>
@@ -304,4 +291,4 @@ window.onload = () => {
 };
 </script>
 </body>
-  </html>
+</html>
